@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  proxmox-mcp:
+    image: proxmox-mcp:latest
+    build:
+      context: https://github.com/canvrno/ProxmoxMCP.git
+      dockerfile: Dockerfile.portainer
+    container_name: proxmox-mcp
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - PROXMOX_HOST=0.0.0.0
+      - PROXMOX_PORT=8006
+      - PROXMOX_USER=root@pam
+      - PROXMOX_TOKEN_NAME=n8n
+      - PROXMOX_TOKEN_VALUE=1234
+      - PROXMOX_VERIFY_SSL=false
+      - MCP_AUTH_TOKEN=secure_token_here
+      - LOG_LEVEL=INFO
+    volumes:
+      - proxmox_config:/app/proxmox-config
+
+volumes:
+  proxmox_config:
